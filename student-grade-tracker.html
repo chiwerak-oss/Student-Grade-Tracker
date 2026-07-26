@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Student Grade Tracker</title>
+<style>
+  body {
+    font-family: Arial, sans-serif;
+    background-color: #f2f2f2;
+    padding: 20px;
+  }
+
+  h1 {
+    text-align: center;
+  }
+
+  .container {
+    max-width: 500px;
+    margin: 0 auto;
+    background-color: white;
+    padding: 20px;
+    border: 1px solid #ccc;
+  }
+
+  input {
+    width: 100%;
+    padding: 8px;
+    margin-bottom: 10px;
+  }
+
+  button {
+    padding: 10px;
+    background-color: #2e5c8a;
+    color: white;
+    border: none;
+    margin-bottom: 15px;
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+
+  th, td {
+    border: 1px solid #ccc;
+    padding: 8px;
+    text-align: left;
+  }
+
+  th {
+    background-color: #2e5c8a;
+    color: white;
+  }
+
+  #average {
+    text-align: center;
+    font-weight: bold;
+  }
+</style>
+</head>
+<body>
+
+<div class="container">
+  <h1>Student Grade Tracker</h1>
+
+  <input type="text" id="nameInput" placeholder="Student name">
+  <input type="number" id="gradeInput" placeholder="Grade">
+  <button onclick="addStudent()">Add Student</button>
+
+  <div id="tableArea"></div>
+
+  <p id="average">Class average: 0</p>
+</div>
+
+<script>
+var students = [];
+
+// try to load saved students when page opens
+var saved = localStorage.getItem("students");
+if (saved) {
+  students = JSON.parse(saved);
+}
+showStudents();
+
+function addStudent() {
+  var name = document.getElementById("nameInput").value;
+  var grade = document.getElementById("gradeInput").value;
+
+  if (name == "" || grade == "") {
+    alert("please enter a name and a grade");
+    return;
+  }
+
+  var student = {};
+  student.name = name;
+  student.grade = grade;
+
+  students.push(student);
+
+  localStorage.setItem("students", JSON.stringify(students));
+
+  document.getElementById("nameInput").value = "";
+  document.getElementById("gradeInput").value = "";
+
+  showStudents();
+}
+
+function deleteStudent(i) {
+  students.splice(i, 1);
+  localStorage.setItem("students", JSON.stringify(students));
+  showStudents();
+}
+
+function showStudents() {
+  var html = "<table><tr><th>Name</th><th>Grade</th><th></th></tr>";
+
+  for (var i = 0; i < students.length; i++) {
+    html += "<tr>";
+    html += "<td>" + students[i].name + "</td>";
+    html += "<td>" + students[i].grade + "</td>";
+    html += "<td><button onclick='deleteStudent(" + i + ")'>x</button></td>";
+    html += "</tr>";
+  }
+
+  html += "</table>";
+
+  document.getElementById("tableArea").innerHTML = html;
+
+  // work out the average
+  var total = 0;
+  for (var i = 0; i < students.length; i++) {
+    total = total + Number(students[i].grade);
+  }
+
+  var avg = 0;
+  if (students.length > 0) {
+    avg = total / students.length;
+  }
+
+  document.getElementById("average").innerHTML = "Class average: " + avg;
+}
+</script>
+
+</body>
+</html>
