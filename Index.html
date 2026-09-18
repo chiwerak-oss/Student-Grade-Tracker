@@ -3,144 +3,443 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Student Grade Tracker</title>
+<title>Student Registration Form</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
-  body {
-    font-family: Arial, sans-serif;
-    background-color: #f2f2f2;
-    padding: 20px;
+  :root{
+    --bg: #0A101C;
+    --card: #121B2A;
+    --card-border: rgba(0,242,254,0.15);
+    --input-bg: #090D16;
+    --input-border: #212E42;
+    --input-border-hover: #3D5A80;
+    --accent: #00F2FE;
+    --accent-soft: rgba(0,242,254,0.14);
+    --success: #10B981;
+    --danger: #EF8C84;
+    --text-primary: #FFFFFF;
+    --text-secondary: #94A3B8;
+    --text-muted: #5B6B84;
+    --divider: rgba(255,255,255,0.06);
+    --radius: 8px;
   }
 
-  h1 {
-    text-align: center;
+  *{ box-sizing: border-box; }
+  html, body{ margin: 0; padding: 0; }
+
+  body{
+    background: var(--bg);
+    color: var(--text-primary);
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    min-height: 100vh;
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    padding: 56px 20px;
+    -webkit-font-smoothing: antialiased;
   }
 
-  .container {
-    max-width: 500px;
-    margin: 0 auto;
-    background-color: white;
-    padding: 20px;
-    border: 1px solid #ccc;
+  .wrap{ width: 100%; max-width: 620px; }
+
+  .eyebrow{
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: var(--accent);
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.02em;
+    margin: 0 0 10px 2px;
+  }
+  .eyebrow .dot{
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--accent);
   }
 
-  input {
-    width: 100%;
-    padding: 8px;
-    margin-bottom: 10px;
+  .card{
+    position: relative;
+    overflow: hidden;
+    background: var(--card);
+    border: 1px solid var(--card-border);
+    border-radius: 18px;
+    padding: 36px 36px 32px;
+    box-shadow: 0 30px 60px -20px rgba(0,0,0,0.55);
   }
 
-  button {
-    padding: 10px;
-    background-color: #2e5c8a;
-    color: white;
+  /* premium glass/plastic sheen across the header */
+  .card::before{
+    content: "";
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 128px;
+    background: linear-gradient(180deg, rgba(255,255,255,0.055), rgba(255,255,255,0) 100%);
+    pointer-events: none;
+  }
+  .card::after{
+    content: "";
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 1px;
+    background: linear-gradient(90deg, rgba(255,255,255,0.35), rgba(255,255,255,0.02));
+    pointer-events: none;
+  }
+
+  .card h1{
+    margin: 0;
+    font-size: 24px;
+    font-weight: 800;
+    letter-spacing: -0.01em;
+    color: var(--text-primary);
+  }
+
+  .card .sub{
+    margin: 6px 0 0;
+    color: var(--text-secondary);
+    font-size: 14px;
+    line-height: 1.5;
+  }
+
+  .hr{
+    height: 1px;
+    background: var(--divider);
     border: none;
-    margin-bottom: 15px;
+    margin: 26px 0 30px;
   }
 
-  table {
+  section{ margin-bottom: 30px; }
+  section:last-of-type{ margin-bottom: 0; }
+
+  .section-title{
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--text-primary);
+    margin: 0 0 14px;
+    letter-spacing: 0.01em;
+  }
+
+  .row{ display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+  .row + .row{ margin-top: 14px; }
+  .stack > * + *{ margin-top: 14px; }
+
+  .field label.small-label{
+    display: block;
+    font-size: 12px;
+    color: var(--text-secondary);
+    margin: 0 0 6px 2px;
+  }
+
+  input[type="text"],
+  input[type="email"],
+  input[type="tel"],
+  input[type="date"],
+  select{
     width: 100%;
-    border-collapse: collapse;
+    background: var(--input-bg);
+    border: 1px solid var(--input-border);
+    border-radius: var(--radius);
+    color: var(--text-primary);
+    font-family: inherit;
+    font-size: 14px;
+    padding: 13px 14px;
+    outline: none;
+    transition: border-color 160ms ease, box-shadow 220ms ease;
+    -webkit-appearance: none;
+    appearance: none;
   }
 
-  th, td {
-    border: 1px solid #ccc;
-    padding: 8px;
-    text-align: left;
+  input::placeholder{ color: var(--text-secondary); opacity: 1; }
+
+  input:hover, select:hover{ border-color: var(--input-border-hover); }
+
+  input:focus, select:focus{
+    border-color: var(--accent);
+    box-shadow: 0 0 0 1px var(--accent);
   }
 
-  th {
-    background-color: #2e5c8a;
-    color: white;
+  input[type="date"]{ color-scheme: dark; }
+  input[type="date"]::-webkit-calendar-picker-indicator{
+    filter: invert(66%) sepia(15%) saturate(500%) hue-rotate(175deg) brightness(95%);
+    cursor: pointer;
+    opacity: 0.9;
   }
+  input[type="date"]::-webkit-calendar-picker-indicator:hover{ opacity: 1; }
 
-  #average {
+  select{
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='11' height='7' viewBox='0 0 11 7' fill='none'%3E%3Cpath d='M1 1L5.5 5.5L10 1' stroke='%2394A3B8' stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 14px center;
+    padding-right: 38px;
+    cursor: pointer;
+  }
+  select:focus{
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='11' height='7' viewBox='0 0 11 7' fill='none'%3E%3Cpath d='M1 1L5.5 5.5L10 1' stroke='%2300F2FE' stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+  }
+  select option{ background: #0F1826; color: var(--text-primary); }
+
+  /* ---- inputs with leading icon + live validation ---- */
+  .field-icon{ position: relative; }
+  .field-icon input{ padding-left: 40px !important; }
+  .field-icon.has-status input{ padding-right: 38px !important; }
+
+  .icon-left{
+    position: absolute;
+    left: 13px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 16px;
+    height: 16px;
+    color: var(--text-secondary);
+    pointer-events: none;
+    transition: color 160ms ease;
+    z-index: 1;
+  }
+  .field-icon:focus-within .icon-left{ color: var(--accent); }
+
+  .icon-status{
+    position: absolute;
+    right: 13px;
+    top: 50%;
+    transform: translateY(-50%) scale(0.6);
+    width: 14px;
+    height: 14px;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 160ms ease, transform 160ms ease;
+  }
+  .icon-status.icon-valid{ color: var(--success); }
+  .icon-status.icon-invalid{ color: var(--danger); }
+  .field-icon.is-valid .icon-status.icon-valid{ opacity: 1; transform: translateY(-50%) scale(1); }
+  .field-icon.is-invalid .icon-status.icon-invalid{ opacity: 1; transform: translateY(-50%) scale(1); }
+
+  /* ---- gender segmented switch ---- */
+  .pill-group{
+    display: flex;
+    gap: 6px;
+    padding: 6px;
+    background: rgba(255,255,255,0.03);
+    border: 1px solid rgba(255,255,255,0.07);
+    border-radius: 999px;
+  }
+  .pill-group input{ position: absolute; opacity: 0; width: 0; height: 0; }
+  .pill-group label{
+    flex: 1;
     text-align: center;
-    font-weight: bold;
+    padding: 11px 16px;
+    border-radius: 999px;
+    border: 1px solid transparent;
+    background: transparent;
+    color: var(--text-secondary);
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: border-color 180ms ease, background 180ms ease, color 180ms ease, box-shadow 180ms ease;
+    user-select: none;
+  }
+  .pill-group label:hover{ color: #C7D2E0; background: rgba(255,255,255,0.03); }
+  .pill-group input:checked + label{
+    background: linear-gradient(135deg, #163247, #101F30);
+    border-color: rgba(0,242,254,0.45);
+    color: var(--text-primary);
+    font-weight: 700;
+    box-shadow: 0 0 0 1px rgba(0,242,254,0.2);
+  }
+  .pill-group input:focus-visible + label{ box-shadow: 0 0 0 2px rgba(148,163,184,0.4); }
+
+  .actions{ display: flex; align-items: center; gap: 14px; margin-top: 34px; }
+
+  .btn-submit{
+    flex: 1;
+    background: linear-gradient(135deg, #10B981, #00C8A0);
+    color: #06120D;
+    font-family: inherit;
+    font-size: 15px;
+    font-weight: 700;
+    border: none;
+    border-radius: var(--radius);
+    padding: 14px 20px;
+    cursor: pointer;
+    box-shadow: 0 6px 14px -6px rgba(0,0,0,0.5);
+    transition: transform 140ms ease, box-shadow 260ms ease, filter 160ms ease;
+  }
+  .btn-submit:hover{
+    transform: scale(1.02);
+    filter: brightness(0.0);
+    box-shadow: 0 8px 18px -6px rgba(0,0,0,0.55);
+  }
+  .btn-submit:active{
+    transform: scale(0.97);
+    box-shadow: 0 3px 8px -4px rgba(0,0,0,0.4);
+  }
+  .btn-submit:focus-visible{ outline: none; box-shadow: 0 0 0 3px rgba(148,163,184,0.35); }
+
+  .btn-reset{
+    background: transparent;
+    border: 1px solid rgba(148,163,184,0.35);
+    border-radius: var(--radius);
+    color: var(--text-secondary);
+    font-family: inherit;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    padding: 13px 20px;
+    transition: border-color 180ms ease, color 180ms ease, background 180ms ease;
+  }
+  .btn-reset:hover{ border-color: rgba(239,140,132,0.55); color: #E7A6A0; background: rgba(239,140,132,0.06); }
+  .btn-reset:focus-visible{ outline: none; box-shadow: 0 0 0 3px rgba(148,163,184,0.2); }
+
+  @media (prefers-reduced-motion: reduce){
+    *{ transition-duration: 0.01ms !important; }
+  }
+
+  @media (max-width: 520px){
+    .card{ padding: 26px 20px 24px; }
+    .row{ grid-template-columns: 1fr; }
+    .row + .row{ margin-top: 0; }
+    .row > .field + .field{ margin-top: 14px; }
+    .actions{ flex-direction: column-reverse; align-items: stretch; gap: 12px; }
   }
 </style>
 </head>
 <body>
+  <div class="wrap">
+    <div class="eyebrow"><span class="dot"></span>Registration</div>
+    <div class="card">
+      <h1>Student Registration Form</h1>
+      <p class="sub">Fill in your details below. Fields marked with a placeholder are required.</p>
+      <hr class="hr">
 
-<div class="container">
-  <h1>Student Grade Tracker</h1>
+      <form id="regForm">
+        <section class="stack">
+          <p class="section-title">Student Name</p>
+          <div class="row">
+            <div class="field">
+              <div class="field-icon has-status" id="firstNameField">
+                <svg class="icon-left" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21a8 8 0 0 0-16 0"/><circle cx="12" cy="7" r="4"/></svg>
+                <input type="text" placeholder="First" required>
+                <svg class="icon-status icon-valid" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>
+                <svg class="icon-status icon-invalid" viewBox="0 0 8 8" fill="currentColor"><circle cx="4" cy="4" r="4"/></svg>
+              </div>
+            </div>
+            <div class="field">
+              <div class="field-icon has-status" id="lastNameField">
+                <svg class="icon-left" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21a8 8 0 0 0-16 0"/><circle cx="12" cy="7" r="4"/></svg>
+                <input type="text" placeholder="Last" required>
+                <svg class="icon-status icon-valid" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>
+                <svg class="icon-status icon-invalid" viewBox="0 0 8 8" fill="currentColor"><circle cx="4" cy="4" r="4"/></svg>
+              </div>
+            </div>
+          </div>
+        </section>
 
-  <input type="text" id="nameInput" placeholder="Student name">
-  <input type="number" id="gradeInput" placeholder="Grade">
-  <button onclick="addStudent()">Add Student</button>
+        <section>
+          <p class="section-title">Date of Birth</p>
+          <div class="field-icon">
+            <svg class="icon-left" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
+            <input type="date" required>
+          </div>
+        </section>
 
-  <div id="tableArea"></div>
+        <section>
+          <p class="section-title">Gender</p>
+          <div class="pill-group">
+            <input type="radio" name="gender" id="genderMale" value="male">
+            <label for="genderMale">Male</label>
+            <input type="radio" name="gender" id="genderFemale" value="female">
+            <label for="genderFemale">Female</label>
+          </div>
+        </section>
 
-  <p id="average">Class average: 0</p>
-</div>
+        <section class="stack">
+          <p class="section-title">Address</p>
+          <div class="field-icon">
+            <svg class="icon-left" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg>
+            <input type="text" placeholder="Street Address" required>
+          </div>
+          <input type="text" placeholder="Street Address Line 2">
+          <div class="row">
+            <input type="text" placeholder="City">
+            <input type="text" placeholder="Region">
+          </div>
+          <div class="row">
+            <input type="text" placeholder="Postal / Zip Code">
+            <select required>
+              <option value="" disabled selected hidden>Country</option>
+              <option selected>Zimbabwe</option>
+              <option>South Africa</option>
+              <option>Botswana</option>
+              <option>Zambia</option>
+              <option>Mozambique</option>
+              <option>Other</option>
+            </select>
+          </div>
+        </section>
 
-<script>
-var students = [];
+        <section>
+          <p class="section-title">Contact</p>
+          <div class="row">
+            <div class="field">
+              <label class="small-label">Email</label>
+              <div class="field-icon has-status" id="emailField">
+                <svg class="icon-left" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m2 7 10 6 10-6"/></svg>
+                <input type="email" placeholder="you@example.com" required>
+                <svg class="icon-status icon-valid" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>
+                <svg class="icon-status icon-invalid" viewBox="0 0 8 8" fill="currentColor"><circle cx="4" cy="4" r="4"/></svg>
+              </div>
+            </div>
+            <div class="field">
+              <label class="small-label">Phone number</label>
+              <div class="field-icon">
+                <svg class="icon-left" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M15.05 5A5 5 0 0 1 19 8.95M15.05 1A9 9 0 0 1 23 8.94m-1 7.98v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92Z"/></svg>
+                <input type="tel" placeholder="(555) 555-5555">
+              </div>
+            </div>
+          </div>
+        </section>
 
-// try to load saved students when page opens
-var saved = localStorage.getItem("students");
-if (saved) {
-  students = JSON.parse(saved);
-}
-showStudents();
+        <div class="actions">
+          <button type="submit" class="btn-submit">Submit</button>
+          <button type="reset" class="btn-reset">Reset</button>
+        </div>
+      </form>
+    </div>
+  </div>
 
-function addStudent() {
-  var name = document.getElementById("nameInput").value;
-  var grade = document.getElementById("gradeInput").value;
+  <script>
+    document.getElementById('regForm').addEventListener('submit', function(e){
+      e.preventDefault();
+    });
 
-  if (name == "" || grade == "") {
-    alert("please enter a name and a grade");
-    return;
-  }
+    function setupValidation(wrapperId, validate){
+      var wrapper = document.getElementById(wrapperId);
+      var input = wrapper.querySelector('input');
+      function update(){
+        var val = input.value.trim();
+        wrapper.classList.remove('has-value', 'is-valid', 'is-invalid');
+        if(!val) return;
+        wrapper.classList.add('has-value');
+        var ok = validate(val, input);
+        wrapper.classList.add(ok ? 'is-valid' : 'is-invalid');
+      }
+      input.addEventListener('input', update);
+      input.addEventListener('blur', update);
+    }
 
-  var student = {};
-  student.name = name;
-  student.grade = grade;
+    var namePattern = /^[A-Za-z'-]{2,}$/;
+    setupValidation('firstNameField', function(v){ return namePattern.test(v); });
+    setupValidation('lastNameField', function(v){ return namePattern.test(v); });
+    setupValidation('emailField', function(v, el){ return el.checkValidity(); });
 
-  students.push(student);
-
-  localStorage.setItem("students", JSON.stringify(students));
-
-  document.getElementById("nameInput").value = "";
-  document.getElementById("gradeInput").value = "";
-
-  showStudents();
-}
-
-function deleteStudent(i) {
-  students.splice(i, 1);
-  localStorage.setItem("students", JSON.stringify(students));
-  showStudents();
-}
-
-function showStudents() {
-  var html = "<table><tr><th>Name</th><th>Grade</th><th></th></tr>";
-
-  for (var i = 0; i < students.length; i++) {
-    html += "<tr>";
-    html += "<td>" + students[i].name + "</td>";
-    html += "<td>" + students[i].grade + "</td>";
-    html += "<td><button onclick='deleteStudent(" + i + ")'>x</button></td>";
-    html += "</tr>";
-  }
-
-  html += "</table>";
-
-  document.getElementById("tableArea").innerHTML = html;
-
-  // work out the average
-  var total = 0;
-  for (var i = 0; i < students.length; i++) {
-    total = total + Number(students[i].grade);
-  }
-
-  var avg = 0;
-  if (students.length > 0) {
-    avg = total / students.length;
-  }
-
-  document.getElementById("average").innerHTML = "Class average: " + avg;
-}
-</script>
-
+    document.getElementById('regForm').addEventListener('reset', function(){
+      setTimeout(function(){
+        ['firstNameField','lastNameField','emailField'].forEach(function(id){
+          document.getElementById(id).classList.remove('has-value','is-valid','is-invalid');
+        });
+      }, 0);
+    });
+  </script>
 </body>
 </html>
